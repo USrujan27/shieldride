@@ -1,9 +1,12 @@
-import React, { Suspense, lazy } from 'react';
+import React, { Suspense, lazy, useState } from 'react';
 import { motion, useScroll, useSpring } from 'framer-motion';
 
 import CustomCursor from './components/CustomCursor';
 import Navbar from './components/Navbar';
 import HeroSection from './components/HeroSection';
+import SignInPage from './pages/SignInPage';
+import SignUpPage from './pages/SignUpPage';
+import DashboardPage from './pages/DashboardPage';
 
 // Lazy-load all below-the-fold sections for faster initial paint
 const TriggersSection  = lazy(() => import('./components/TriggersSection'));
@@ -21,7 +24,7 @@ const SectionFallback = () => (
   </div>
 );
 
-function App() {
+function HomePage({ onNavigate }) {
   const { scrollYProgress } = useScroll();
   const scaleX = useSpring(scrollYProgress, {
     stiffness: 200,
@@ -38,12 +41,12 @@ function App() {
       />
 
       <CustomCursor />
-      <Navbar />
+      <Navbar onNavigate={onNavigate} />
 
       <main>
         {/* Hero is eagerly loaded */}
         <section id="home">
-          <HeroSection />
+          <HeroSection onNavigate={onNavigate} />
         </section>
 
         <Suspense fallback={<SectionFallback />}>
@@ -76,7 +79,7 @@ function App() {
 
         <Suspense fallback={<SectionFallback />}>
           <section id="pricing">
-            <PricingSection />
+            <PricingSection onNavigate={onNavigate} />
           </section>
         </Suspense>
       </main>
@@ -90,6 +93,21 @@ function App() {
       </Suspense>
     </div>
   );
+}
+
+function App() {
+  const [page, setPage] = useState('home');
+
+  const navigate = (target) => {
+    setPage(target);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  if (page === 'signin') return <SignInPage onNavigate={navigate} />;
+  if (page === 'signup') return <SignUpPage onNavigate={navigate} />;
+  if (page === 'dashboard') return <DashboardPage onNavigate={navigate} />;
+
+  return <HomePage onNavigate={navigate} />;
 }
 
 export default App;

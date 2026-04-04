@@ -62,7 +62,7 @@ const MagneticButton = ({ children }) => {
   );
 };
 
-export default function HeroSection() {
+export default function HeroSection({ onNavigate }) {
   const payoutAmount = useCountUp(500, 3);
   const [simStep, setSimStep] = useState(0);
   const [showToast, setShowToast] = useState(false);
@@ -153,8 +153,16 @@ export default function HeroSection() {
             AI-powered income protection for gig workers. Instant payouts when the city stands still due to extreme weather or events.
           </p>
           
-          <div onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}>
-            <MagneticButton>Protect My Income</MagneticButton>
+          <div className="flex items-center gap-4 flex-wrap">
+            <div onClick={() => onNavigate?.('signup')}>
+              <MagneticButton>Protect My Income</MagneticButton>
+            </div>
+            <button
+              onClick={() => document.getElementById('pricing')?.scrollIntoView({ behavior: 'smooth' })}
+              className="text-white/50 hover:text-white font-sans text-sm underline underline-offset-4 transition-colors duration-200"
+            >
+              See pricing →
+            </button>
           </div>
         </div>
 

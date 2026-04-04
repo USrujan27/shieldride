@@ -42,7 +42,7 @@ const plans = [
   { name: "Pro Shield", price: 99, maxPayout: 800, highlighted: false }
 ];
 
-export default function PricingSection() {
+export default function PricingSection({ onNavigate }) {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -118,7 +118,7 @@ export default function PricingSection() {
                 </div>
               </div>
 
-              <div onClick={() => document.getElementById('risk-calculator')?.scrollIntoView({ behavior: 'smooth' })}>
+              <div onClick={() => onNavigate?.('signup')}>
                 <MagneticButton isHighlighted={plan.highlighted}>
                   Activate Coverage
                 </MagneticButton>
